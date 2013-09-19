@@ -15,31 +15,33 @@ Meteor Paginator provides templates and callbacks to easily page your subscribed
 
 You'll need to expose your publication with arguments for `limit` and `skip`
 
+```javascript
     Meteor.publish("myCollection", function(skip, limit) {
       return MyCollection.find({}, {
         skip: skip || 0
         , limit: limit || 10
       });
     });
+```
   
 Next, you'll need a server method that gives you a total record count for your collection.
-
+```javascript
     Meteor.methods({
       totalCount: function() {
         return MyCollection.find().count();
       }
     });
-  
+```
 ####Client Code
 
 Wire up your subscription with `Session` variables for both `skip` and `limit`
- 
+```javascript 
     Deps.autorun(function() {
       Meteor.subHandle = Meteor.subscribe("myCollection", Session.get("pagingSkip"), Session.get("pagingLimit"));
     }
-  
+```  
 Next, in your `Template` where you want to page the data, instantiate the Paginator:
-
+```javascript
     var _pager = new Meteor.Paginator({
       	templates: {
 			content: "my_template"
@@ -71,15 +73,15 @@ Next, in your `Template` where you want to page the data, instantiate the Pagina
 			}
 		}
 	});
-
+```
 And ensure you're sending in the collection to the template:
-
+```javascript
      Template.my_template.person = function() {
         return MyCollection.find();
      };
-
+```
 Finally, in your HTML
-
+```html
   <template name="my_template">
   
      <table class="table table-striped table-bordered">
@@ -101,7 +103,7 @@ Finally, in your HTML
      </div>
      
   </template>
-  
+```  
 Both `{{{paginationPuttons}}}` and `{{{selectPerPage}}}` are dynamically-creatd templates included in Meteor.Paginator. The styling all comes from Twitter Bootstrap.
 
 
@@ -112,7 +114,7 @@ Live Example: http://multipage.meteor.com
 You may want to page the same data twice, or page different data, within the same view. The below example illustrates how this works.
 
 ### Javascript
-
+```javascript
     Kittens = new Meteor.Collection("kittens");
     KittensView = new Meteor.Collection("kittensView");
     Puppies = new Meteor.Collection("puppies");
@@ -258,10 +260,10 @@ You may want to page the same data twice, or page different data, within the sam
         }
       });
     }
-
+```
 ### HTML
-
-<head>
+```html
+	<head>
 		<title>multipage</title>
 	</head>
 
@@ -360,5 +362,5 @@ You may want to page the same data twice, or page different data, within the sam
 			{{{ selectPerPage }}}
 		</div>
 	</template>
-
+```
 
